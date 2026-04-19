@@ -14,6 +14,7 @@ const config = defineConfig({
   schema: {
     types: [postType],
   },
+  basePath: "/studio",
 });
 
 export default function StudioPage() {
