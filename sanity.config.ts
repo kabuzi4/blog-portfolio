@@ -1,6 +1,6 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
-import { postType } from "./schemaTypes/post";
+import { postType } from "./sanity/schemaTypes/post"
 
 export default defineConfig({
   name: "blog-guilherme-reis",
