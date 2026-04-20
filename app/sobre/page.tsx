@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 // ─── Dados ────────────────────────────────────────────────────────────────────
 const EXPERIENCIAS = [
@@ -120,9 +121,13 @@ export default function SobrePage() {
 
           {/* Avatar + links */}
           <div className="flex flex-col items-center gap-4 flex-shrink-0">
-            <div className="w-44 h-44 rounded-2xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400 text-sm">
-              Sua foto aqui
-            </div>
+              <Image
+                src="/foto-perfil.jpg"
+                alt="Guilherme C. Q. Reis — Gerente de TI & Desenvolvimento"
+                width={200}
+                height={200}
+                className="w-48 h-48 md:w-56 md:h-56 rounded-2xl object-cover border border-gray-200"
+              />
             <div className="flex flex-col gap-2 w-full">
               <a
                 href="https://www.linkedin.com/in/guilherme-reis-ti"

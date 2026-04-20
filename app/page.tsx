@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 // ─── Dados do perfil ────────────────────────────────────────────────────────
 const PROFILE = {
@@ -178,9 +179,13 @@ export default function Home() {
 
           {/* Avatar placeholder */}
           <div className="flex-shrink-0">
-            <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400 text-sm border border-gray-200">
-              Sua foto aqui
-            </div>
+            <Image
+              src="/foto-perfil.jpg"
+              alt="Guilherme C. Q. Reis — Gerente de TI & Desenvolvimento"
+              width={200}
+              height={200}
+              className="w-48 h-48 md:w-56 md:h-56 rounded-2xl object-cover border border-gray-200"
+            />
           </div>
         </div>
       </section>
