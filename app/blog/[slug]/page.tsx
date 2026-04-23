@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "next-sanity";
 import { client } from "@/sanity/lib/client";
+import { urlForImage } from "@/sanity/lib/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -15,6 +17,10 @@ type Post = {
   publishedAt: string;
   readTime: string;
   body: unknown[];
+  mainImage?: {
+    asset: { _ref: string };
+    alt?: string;
+  };
 };
 
 // ─── Cores das tags ───────────────────────────────────────────────────────────
@@ -29,7 +35,8 @@ const TAG_COLORS: Record<string, string> = {
 async function getPost(slug: string): Promise<Post | null> {
   return client.fetch(
     `*[_type == "post" && slug.current == $slug][0] {
-      _id, title, slug, category, excerpt, publishedAt, readTime, body
+      _id, title, slug, category, excerpt, publishedAt, readTime, body,
+      mainImage { asset, alt }
     }`,
     { slug },
     { next: { revalidate: 60 } }
@@ -46,17 +53,13 @@ async function getRelated(slug: string, category: string): Promise<Post[]> {
   );
 }
 
-async function getAllSlugs(): Promise<{ slug: string }[]> {
-  return client.fetch(`*[_type == "post"] { "slug": slug.current }`);
-}
-
-// ─── Geração estática ─────────────────────────────────────────────────────────
 export async function generateStaticParams() {
-  const slugs = await getAllSlugs();
+  const slugs: { slug: string }[] = await client.fetch(
+    `*[_type == "post"] { "slug": slug.current }`
+  );
   return slugs.map((s) => ({ slug: s.slug }));
 }
 
-// ─── Formatação de data ───────────────────────────────────────────────────────
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("pt-BR", {
     day: "2-digit", month: "long", year: "numeric",
@@ -94,7 +97,7 @@ const ptComponents = {
   },
   list: {
     bullet: ({ children }: { children?: React.ReactNode }) => (
-      <ul className="list-none flex flex-col gap-2 mb-5 pl-0">{children}</ul>
+      <ul className="list-none flex flex-col gap-2 mb-5">{children}</ul>
     ),
     number: ({ children }: { children?: React.ReactNode }) => (
       <ol className="list-decimal pl-5 flex flex-col gap-2 mb-5">{children}</ol>
@@ -125,6 +128,10 @@ export default async function PostPage({
 
   const related = await getRelated(slug, post.category);
   const tagColor = TAG_COLORS[post.category] ?? "bg-gray-50 text-gray-600 border-gray-100";
+
+  const coverImageUrl = post.mainImage?.asset
+    ? urlForImage(post.mainImage).width(1200).height(630).url()
+    : null;
 
   return (
     <main className="min-h-screen bg-white">
@@ -161,9 +168,21 @@ export default async function PostPage({
 
       {/* ── IMAGEM DE CAPA ── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
-        <div className="w-full h-64 sm:h-80 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400 text-sm border border-gray-200">
-          Imagem de capa do artigo
-        </div>
+        {coverImageUrl ? (
+          <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-gray-200">
+            <Image
+              src={coverImageUrl}
+              alt={post.mainImage?.alt ?? post.title}
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        ) : (
+          <div className="w-full h-64 sm:h-80 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400 text-sm border border-gray-200">
+            Imagem de capa do artigo
+          </div>
+        )}
       </div>
 
       {/* ── CONTEÚDO + SIDEBAR ── */}
@@ -172,15 +191,16 @@ export default async function PostPage({
 
           {/* Artigo */}
           <article className="flex-1 min-w-0">
-            {/* Intro destacada */}
             <p className="text-base font-medium text-gray-700 leading-relaxed mb-8 pb-8 border-b border-gray-100">
               {post.excerpt}
             </p>
 
-            {/* Corpo via PortableText */}
             {post.body && post.body.length > 0 ? (
               <div className="mb-10">
-                <PortableText value={post.body as Parameters<typeof PortableText>[0]["value"]} components={ptComponents} />
+                <PortableText
+                  value={post.body as Parameters<typeof PortableText>[0]["value"]}
+                  components={ptComponents}
+                />
               </div>
             ) : (
               <p className="text-sm text-gray-400 italic mb-10">
@@ -188,7 +208,6 @@ export default async function PostPage({
               </p>
             )}
 
-            {/* Tags + compartilhar */}
             <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-gray-100">
               <span className="text-xs text-gray-400">Tags:</span>
               <span className={`text-xs font-medium px-3 py-1 rounded-full border ${tagColor}`}>

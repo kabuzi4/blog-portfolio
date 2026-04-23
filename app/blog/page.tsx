@@ -1,8 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 import { client } from "@/sanity/lib/client";
+import { urlForImage } from "@/sanity/lib/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+// ─── Tipos ────────────────────────────────────────────────────────────────────
 type Post = {
   _id: string;
   title: string;
@@ -11,6 +14,10 @@ type Post = {
   excerpt: string;
   publishedAt: string;
   readTime: string;
+  mainImage?: {
+    asset: { _ref: string };
+    alt?: string;
+  };
 };
 
 const TAG_COLORS: Record<string, string> = {
@@ -25,7 +32,8 @@ const CATEGORIAS = ["Todos", "Liderança", "Gestão Ágil", "Dados & BI", "Ferra
 async function getPosts(): Promise<Post[]> {
   return client.fetch(
     `*[_type == "post"] | order(publishedAt desc) {
-      _id, title, slug, category, excerpt, publishedAt, readTime
+      _id, title, slug, category, excerpt, publishedAt, readTime,
+      mainImage { asset, alt }
     }`,
     {},
     { next: { revalidate: 60 } }
@@ -78,12 +86,29 @@ export default async function BlogPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((post) => {
               const tagColor = TAG_COLORS[post.category] ?? "bg-gray-50 text-gray-600 border-gray-100";
+              const imageUrl = post.mainImage?.asset
+                ? urlForImage(post.mainImage).width(600).height(340).url()
+                : null;
+
               return (
                 <Link key={post._id} href={`/blog/${post.slug.current}`}
                   className="group flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-blue-200 hover:shadow-sm transition-all duration-200">
-                  <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400 text-xs">
-                    Imagem do artigo
-                  </div>
+
+                  {imageUrl ? (
+                    <div className="relative w-full h-40 overflow-hidden">
+                      <Image
+                        src={imageUrl}
+                        alt={post.mainImage?.alt ?? post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400 text-xs">
+                      Imagem do artigo
+                    </div>
+                  )}
+
                   <div className="flex flex-col flex-1 p-5 gap-3">
                     <span className={`inline-block text-xs font-medium px-3 py-1 rounded-full border w-fit ${tagColor}`}>
                       {post.category}
