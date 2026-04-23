@@ -339,9 +339,6 @@ export default function SobrePage() {
             >
               LinkedIn
             </a>
-            <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-              GitHub
-            </a>
           </div>
         </div>
       </footer>

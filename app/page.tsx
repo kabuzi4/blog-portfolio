@@ -170,7 +170,7 @@ export default function Home() {
                 href={PROFILE.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-2.5 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-5 py-2.5 border border-blue-200 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors"
               >
                 LinkedIn
               </a>
@@ -279,14 +279,6 @@ export default function Home() {
               className="hover:text-white transition-colors"
             >
               LinkedIn
-            </a>
-            <a
-              href={PROFILE.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
-            >
-              GitHub
             </a>
           </div>
         </div>
