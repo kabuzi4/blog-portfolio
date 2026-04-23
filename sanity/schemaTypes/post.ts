@@ -5,18 +5,25 @@ export const postType = defineType({
   title: "Post",
   type: "document",
   fields: [
-    defineField({
-      name: "title",
-      title: "Título",
-      type: "string",
-      validation: (rule) => rule.required().min(5).max(100),
-    }),
+    defineField({ name: "title", title: "Título", type: "string" }),
     defineField({
       name: "slug",
       title: "Slug (URL do post)",
       type: "slug",
       options: { source: "title", maxLength: 96 },
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "mainImage",
+      title: "Imagem de capa",
+      type: "image",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Texto alternativo",
+          type: "string",
+        }),
+      ],
     }),
     defineField({
       name: "category",
@@ -30,26 +37,10 @@ export const postType = defineType({
           { title: "Ferramentas para Líderes", value: "Ferramentas para Líderes" },
         ],
       },
-      validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: "excerpt",
-      title: "Resumo (aparece nos cards)",
-      type: "text",
-      rows: 3,
-      validation: (rule) => rule.required().max(200),
-    }),
-    defineField({
-      name: "publishedAt",
-      title: "Data de publicação",
-      type: "datetime",
-      initialValue: () => new Date().toISOString(),
-    }),
-    defineField({
-      name: "readTime",
-      title: "Tempo de leitura (ex: 7 min)",
-      type: "string",
-    }),
+    defineField({ name: "excerpt", title: "Resumo", type: "text", rows: 3 }),
+    defineField({ name: "publishedAt", title: "Data de publicação", type: "datetime" }),
+    defineField({ name: "readTime", title: "Tempo de leitura", type: "string" }),
     defineField({
       name: "body",
       title: "Conteúdo do artigo",
@@ -65,9 +56,9 @@ export const postType = defineType({
           ],
           marks: {
             decorators: [
-              { title: "Negrito",   value: "strong" },
-              { title: "Itálico",   value: "em" },
-              { title: "Código",    value: "code" },
+              { title: "Negrito", value: "strong" },
+              { title: "Itálico", value: "em" },
+              { title: "Código",  value: "code" },
             ],
           },
         },
@@ -75,6 +66,6 @@ export const postType = defineType({
     }),
   ],
   preview: {
-    select: { title: "title", subtitle: "category" },
+    select: { title: "title", subtitle: "category", media: "mainImage" },
   },
 });
