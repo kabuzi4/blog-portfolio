@@ -1,9 +1,9 @@
 import createImageUrlBuilder from "@sanity/image-url";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "./client";
 
 const imageBuilder = createImageUrlBuilder(client);
 
-export function urlForImage(source: SanityImageSource) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function urlForImage(source: any) {
   return imageBuilder.image(source).auto("format").fit("max");
 }
