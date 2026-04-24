@@ -43,14 +43,9 @@ const FORMACOES = [
     icon: "🎓",
   },
   {
-    titulo: "Pós-graduação em Inteligência Artificial",
-    instituicao: "Especialização · Concluído",
+    titulo: "Inteligência Artificial e Gestão Estratégica para Líderes",
+    instituicao: "Especialização · Em Curso",
     icon: "🤖",
-  },
-  {
-    titulo: "Gestão Estratégica para Líderes",
-    instituicao: "Especialização · Concluído",
-    icon: "📈",
   },
 ];
 
