@@ -90,7 +90,7 @@ export default async function BlogPage({
                 href={href}
                 className={`flex-shrink-0 text-xs font-medium px-4 py-1.5 rounded-full border transition-colors ${
                   isActive
-                    ? "bg-blue-600 text-white border-blue-600"
+                    ? "bg-blue-700 text-white border-blue-600"
                     : "bg-white text-gray-500 border-gray-200 hover:border-blue-200 hover:text-blue-600"
                 }`}
               >
