@@ -260,7 +260,7 @@ export default async function PostPage({
                 </div>
               )}
 
-              <div className="bg-blue-700 rounded-2xl p-4 text-center">
+              <div className="bg-blue-600 rounded-2xl p-4 text-center">
                 <p className="text-xs font-semibold text-white mb-1">Vamos nos conectar?</p>
                 <p className="text-xs text-blue-100 mb-3 leading-relaxed">
                   Sigo compartilhando conteúdo sobre TI e liderança no LinkedIn.

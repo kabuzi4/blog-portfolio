@@ -157,7 +157,7 @@ export default function Home() {
             <div className="flex flex-wrap gap-3 pt-2">
               <Link
                 href="/blog"
-                className="px-5 py-2.5 bg-blue-700 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Ver artigos
               </Link>
@@ -246,7 +246,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA FINAL ── */}
-      <section className="bg-blue-700 py-14">
+      <section className="bg-blue-600 py-14">
         <div className="max-w-5xl mx-auto px-6 text-center flex flex-col items-center gap-4">
           <h2 className="text-2xl font-bold text-white">
             Vamos trocar experiências?
