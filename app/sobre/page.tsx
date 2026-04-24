@@ -140,7 +140,7 @@ export default function SobrePage() {
               </a>
               <Link
                 href="/blog"
-                className="text-center text-xs font-medium px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
+                className="text-center text-xs font-medium px-4 py-2 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 transition-colors"
               >
                 Ver artigos
               </Link>
